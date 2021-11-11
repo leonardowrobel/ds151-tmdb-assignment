@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "tmdb",
-    "slug": "tmdb",
+    "name": "ds151-tmdb-assignment",
+    "slug": "ds151-tmdb-assignment",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
