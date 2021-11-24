@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, TextInput, View } from "react-native";
+import { Button, StyleSheet, TextInput, View } from "react-native";
 
 const SearchBar = ({ value, setValue, searchValue }) => {
 
@@ -11,21 +11,23 @@ const SearchBar = ({ value, setValue, searchValue }) => {
                 autoCorrect={false}
                 placeholder="Search"
                 onChangeText={setValue}
-                onEndEditing={searchValue}
                 value={value}
+            />
+            <br/>
+            <Button
+                title='Pesquisar'
+                onPress={searchValue}
             />
         </View>
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
+    container: {        
         padding: 5,
-        height: 30
+        marginBottom: 10
     },
     textInput: {
-        flex: 1,
         padding: 5,
         backgroundColor: '#dddddd'
     }

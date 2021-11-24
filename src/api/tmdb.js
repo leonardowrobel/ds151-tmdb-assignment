@@ -1,11 +1,13 @@
-import axios from 'axios';
+import axios from 'axios'
 
 // Insira aqui sua api_key
-const apiKey = '27b3720491843d47a6e61ac559efd810';
+const apiKey = '27b3720491843d47a6e61ac559efd810'
 
 export default axios.create({
   baseURL: 'https://api.themoviedb.org/3/',
-  params:{
+  params: {
     api_key: apiKey,
-  }
-});
+  },
+  timeout: 1000,
+  headers: {}
+})
