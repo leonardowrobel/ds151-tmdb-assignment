@@ -42,6 +42,12 @@ const HomeScreen = ({ navigation }) => {
         console.log(id)
     }
 
+    function changeFilter(filter){
+        switch(filter){
+            case ''
+            
+        }
+    }
 
     return (
         <View style={styles.container}>
