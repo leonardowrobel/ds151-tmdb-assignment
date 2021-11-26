@@ -5,7 +5,11 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 const SearchResult = ({ item, baseUrl, viewDetails }) => {
 
     //console.log(item.poster_path)
-    console.log(`${baseUrl + item.poster_path}`);
+    //console.log(`${baseUrl + item.poster_path}`);
+
+    //const title = (item.original_title || item.name || item.original_name)
+    
+    // console.log(itemTitle)
 
     if ((typeof item.id) !== 'undefined') {
         return (

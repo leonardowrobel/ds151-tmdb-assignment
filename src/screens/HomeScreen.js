@@ -10,7 +10,7 @@ const HomeScreen = ({ navigation }) => {
     const [result, setResult] = useState([{}])
 
     // FILTERS
-    const [movieFilter, setMovieFilter] = useState(false)
+    const [movieFilter, setMovieFilter] = useState(true)
     const [peopleFilter, setPeopleFilter] = useState(false)
     const [tvFilter, setTvFilter] = useState(false)
 
@@ -27,7 +27,9 @@ const HomeScreen = ({ navigation }) => {
     function search() {
         const query = inputText;
 
-        tmdb.get('/search/movie', {
+        const filter = (movieFilter ? 'movie' : peopleFilter ? 'person' : 'tv')
+
+        tmdb.get(`/search/${filter}`, {
             params: {
                 query,
                 include_adult: false
@@ -42,12 +44,30 @@ const HomeScreen = ({ navigation }) => {
         console.log(id)
     }
 
-    function changeFilter(filter){
-        switch(filter){
-            case ''
-            
+    function changeFilter(t) {
+        console.log('changeFilter')
+        switch (t) {
+            case 'movies':
+                console.log('movies')
+                setMovieFilter(true)
+                setPeopleFilter(false)
+                setTvFilter(false)
+                break
+            case 'people':
+                console.log('people')
+                setMovieFilter(false)
+                setPeopleFilter(true)
+                setTvFilter(false)
+                break
+            case 'tv':
+                console.log('tv')
+                setMovieFilter(false)
+                setPeopleFilter(false)
+                setTvFilter(true)
+                break
         }
     }
+
 
     return (
         <View style={styles.container}>
@@ -58,24 +78,24 @@ const HomeScreen = ({ navigation }) => {
                 searchValue={() => search()}
             />
             <Switch
+            
                 trackColor={{ false: "#767577", true: "#81b0ff" }}
                 thumbColor={movieFilter ? "#f5dd4b" : "#f4f3f4"}
                 ios_backgroundColor="#3e3e3e"
-                onValueChange={setMovieFilter}
-                value={movieFilter}
-            />
+                onValueChange={(t) => changeFilter('movies')}
+                value={movieFilter} />
             <Switch
                 trackColor={{ false: "#767577", true: "#81b0ff" }}
                 thumbColor={peopleFilter ? "#f5dd4b" : "#f4f3f4"}
                 ios_backgroundColor="#3e3e3e"
-                onValueChange={setPeopleFilter}
+                onValueChange={(t) => changeFilter('people')}
                 value={peopleFilter}
             />
             <Switch
                 trackColor={{ false: "#767577", true: "#81b0ff" }}
                 thumbColor={tvFilter ? "#f5dd4b" : "#f4f3f4"}
                 ios_backgroundColor="#3e3e3e"
-                onValueChange={setTvFilter}
+                onValueChange={(t) => changeFilter('tv')}
                 value={tvFilter}
             />
             <FlatList
