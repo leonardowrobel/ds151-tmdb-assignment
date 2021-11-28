@@ -15,6 +15,7 @@ const HomeScreen = ({ navigation }) => {
     const [tvFilter, setTvFilter] = useState(false)
 
     const [baseUrl, setBaseUrl] = useState('movie')
+    const [dataType, setDataType] = useState('movie')
 
     useEffect(() => {
         tmdb.get('/configuration')
@@ -27,6 +28,7 @@ const HomeScreen = ({ navigation }) => {
         const query = inputText;
 
         const filter = (movieFilter ? 'movie' : peopleFilter ? 'person' : 'tv')
+        setDataType(filter)
 
         tmdb.get(`/search/${filter}`, {
             params: {
@@ -38,8 +40,12 @@ const HomeScreen = ({ navigation }) => {
         })
     }
 
-    function viewDetails(id) {
-        navigation.navigate('Details', { id: id, baseUrl: baseUrl })
+    function viewDetails(id, dataType) {
+        navigation.navigate('Details', {
+            id: id,
+            baseUrl: baseUrl,
+            dataType: dataType
+        })
     }
 
     function changeFilter(t) {
@@ -69,31 +75,43 @@ const HomeScreen = ({ navigation }) => {
                 value={inputText}
                 setValue={(t) => setInputText(t)}
                 searchValue={() => search()} />
-            <Switch
-                trackColor={{ false: "#767577", true: "#81b0ff" }}
-                thumbColor={movieFilter ? "#f5dd4b" : "#f4f3f4"}
-                ios_backgroundColor="#3e3e3e"
-                onValueChange={(t) => changeFilter('movies')}
-                value={movieFilter} />
-            <Switch
-                trackColor={{ false: "#767577", true: "#81b0ff" }}
-                thumbColor={peopleFilter ? "#f5dd4b" : "#f4f3f4"}
-                ios_backgroundColor="#3e3e3e"
-                onValueChange={(t) => changeFilter('people')}
-                value={peopleFilter} />
-            <Switch
-                trackColor={{ false: "#767577", true: "#81b0ff" }}
-                thumbColor={tvFilter ? "#f5dd4b" : "#f4f3f4"}
-                ios_backgroundColor="#3e3e3e"
-                onValueChange={(t) => changeFilter('tv')}
-                value={tvFilter} />
+            <View style={styles.filtersContainer}>
+                <View style={styles.filtersComponents} >
+                    <Switch
+                        trackColor={{ false: "#767577", true: "#81b0ff" }}
+                        thumbColor={movieFilter ? "#f5dd4b" : "#f4f3f4"}
+                        ios_backgroundColor="#3e3e3e"
+                        onValueChange={(t) => changeFilter('movies')}
+                        value={movieFilter} />
+                    <Text>Movies</Text>
+                </View>
+                <View style={styles.filtersComponents} >
+                    <Switch
+                        trackColor={{ false: "#767577", true: "#81b0ff" }}
+                        thumbColor={peopleFilter ? "#f5dd4b" : "#f4f3f4"}
+                        ios_backgroundColor="#3e3e3e"
+                        onValueChange={(t) => changeFilter('people')}
+                        value={peopleFilter} />
+                    <Text>People</Text>
+                </View>
+                <View style={styles.filtersComponents} >
+                    <Switch
+                        trackColor={{ false: "#767577", true: "#81b0ff" }}
+                        thumbColor={tvFilter ? "#f5dd4b" : "#f4f3f4"}
+                        ios_backgroundColor="#3e3e3e"
+                        onValueChange={(t) => changeFilter('tv')}
+                        value={tvFilter} />
+                    <Text>TV</Text>
+                </View>
+            </View>
             <FlatList
                 style={styles.list}
                 data={result}
                 renderItem={({ item }) => <SearchResult
                     item={item}
                     baseUrl={baseUrl}
-                    viewDetails={viewDetails} />}
+                    viewDetails={viewDetails}
+                    dataType={dataType} />}
                 keyExtractor={(item) => item.id}
             />
         </View>
@@ -106,6 +124,13 @@ const styles = StyleSheet.create({
     },
     list: {
         margin: 5
+    },
+    filtersContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-around'
+    },
+    filtersComponents: {
+        textAlign: 'center'
     }
 });
 

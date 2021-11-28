@@ -4,18 +4,45 @@ import tmdb from '../api/tmdb';
 
 const DetailsScreen = ({ route }) => {
 
-    const [movie, setMovie] = useState({})
-    const { id, baseUrl } = route.params
+    const [data, setData] = useState({})
+    const { id, baseUrl, dataType } = route.params
     const [loading, setLoading] = useState(true)
+    const [dataAccess, setDataAccess] = useState({ pic: '', name: '', year: '' })
+
+    console.log('dataType ' + dataType)
 
     useEffect(() => {
-        tmdb.get(`/movie/${id}`)
+        tmdb.get(`/${dataType}/${id}`)
             .then((response) => {
-                setMovie(response.data)
-                //console.log(`${baseUrl + 'w185' + poster_path}`)
+                setData(response.data)
+                switch (dataType) {
+                    case 'movie':
+                        setDataAccess({
+                            pic: 'poster_path',
+                            name: 'original_title',
+                            year: 'release_date'
+                        })
+                        break
+                    case 'person':
+                        setDataAccess({
+                            pic: 'profile_path',
+                            name: 'name',
+                            year: 'birthday'
+                        })
+                        break
+                    case 'tv':
+                        setDataAccess({
+                            pic: 'poster_path',
+                            name: 'name',
+                            year: 'first_air_date'
+                        })
+                        break
+                }
                 setLoading(false)
             })
     }, [])
+
+
 
     if (loading) {
         return (
@@ -28,10 +55,10 @@ const DetailsScreen = ({ route }) => {
             <View>
                 <Image
                     style={styles.poster}
-                    source={{ uri: (`${baseUrl + 'w342' + movie.poster_path}`) }}
+                    source={{ uri: (`${baseUrl + 'w342' + data[dataAccess.pic]}`) }}
                 />
-                <Text>{movie.original_title}</Text>
-                <Text>{movie.release_date}</Text>
+                <Text>{data[dataAccess.name]}</Text>
+                <Text>{data[dataAccess.year]}</Text>
             </View>
         )
     }
@@ -39,7 +66,7 @@ const DetailsScreen = ({ route }) => {
 
 const styles = StyleSheet.create({
     container: {
-        
+
     },
     poster: {
         width: 342,

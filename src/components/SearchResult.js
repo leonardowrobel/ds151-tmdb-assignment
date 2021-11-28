@@ -2,21 +2,14 @@ import React from 'react'
 import { Image, StyleSheet, Text, View } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-const SearchResult = ({ item, baseUrl, viewDetails }) => {
-
-    //console.log(item.poster_path)
-    //console.log(`${baseUrl + item.poster_path}`);
-
-    //const title = (item.original_title || item.name || item.original_name)
-
-    console.log(item)
+const SearchResult = ({ item, baseUrl, viewDetails, dataType }) => {
 
     const name = ('original_title' in item) ? item.original_title : ('name' in item ? item.name : item.original_name)
     const imagePath = ('poster_path' in item) ? 'poster_path' : 'profile_path' 
 
     if ((typeof item.id) !== 'undefined') {
         return (
-            <TouchableOpacity onPress={() => viewDetails(item.id)}>
+            <TouchableOpacity onPress={() => viewDetails(item.id, dataType)}>
                 <View>
                     <Image
                         style={styles.poster}
